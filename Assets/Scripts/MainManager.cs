@@ -10,6 +10,7 @@ public class MainManager : MonoBehaviour
     public int LineCount = 6;
     public Rigidbody Ball;
 
+    public Text HighScoreText;
     public Text ScoreText;
     public GameObject GameOverText;
     
@@ -18,14 +19,14 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
-        
-        int[] pointCountArray = new [] {1,1,2,2,5,5};
+
+        int[] pointCountArray = new[] { 1, 1, 2, 2, 5, 5 };
         for (int i = 0; i < LineCount; ++i)
         {
             for (int x = 0; x < perLine; ++x)
@@ -36,8 +37,19 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
-    }
 
+        if (GameManager.Instance != null)
+        {
+            if (GameManager.Instance.playerName != "")
+            {
+                HighScoreText.text = "High Score: 0 by " + GameManager.Instance.playerName;
+            }
+            else
+            {
+                HighScoreText.text = "High Score: 0";
+            }
+        }
+    }
     private void Update()
     {
         if (!m_Started)
@@ -72,5 +84,10 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
