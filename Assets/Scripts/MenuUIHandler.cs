@@ -10,6 +10,7 @@ using UnityEditor;
 public class MenuUIHandler : MonoBehaviour
 {
     public TMP_InputField playerNameInput;
+    public TextMeshProUGUI highScoreText;
 
     public void NewPlayerNameEntered(string name)
     {
@@ -21,15 +22,21 @@ public class MenuUIHandler : MonoBehaviour
     {
         playerNameInput.onEndEdit.AddListener(NewPlayerNameEntered);
         playerNameInput.text = GameManager.Instance.playerName;
+        highScoreText.text = GameManager.Instance.GetHighScoreMessage();
     }
 
     public void StartNew()
     {
-        SceneManager.LoadScene(1);
+        if (playerNameInput.text != "")
+        {
+            SceneManager.LoadScene(1);
+        }
     }
 
     public void Exit()
     {
+        GameManager.Instance.SaveHighScore();
+
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else

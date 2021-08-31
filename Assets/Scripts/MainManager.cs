@@ -40,14 +40,7 @@ public class MainManager : MonoBehaviour
 
         if (GameManager.Instance != null)
         {
-            if (GameManager.Instance.playerName != "")
-            {
-                HighScoreText.text = "High Score: 0 by " + GameManager.Instance.playerName;
-            }
-            else
-            {
-                HighScoreText.text = "High Score: 0";
-            }
+            HighScoreText.text = GameManager.Instance.GetHighScoreMessage();
         }
     }
     private void Update()
@@ -78,6 +71,11 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+        if (m_Points > GameManager.Instance.highScore)
+        {
+            GameManager.Instance.SetNewHighScore(m_Points);
+            HighScoreText.text = GameManager.Instance.GetHighScoreMessage();
+        }
     }
 
     public void GameOver()
